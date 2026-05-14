@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "name": "on",
+      "description": "Turn the LED on.",
+      "inputs": [],
+      "output": "state"
+    },
+    {
+      "name": "off",
+      "description": "Turn the LED off.",
+      "inputs": [],
+      "output": "state"
+    },
+    {
+      "name": "on_for",
+      "description": "Turn the LED on for a duration, then turn it off.",
+      "inputs": ["seconds"],
+      "output": "state"
+    },
+    {
+      "name": "blink",
+      "description": "Blink the LED with the given timing.",
+      "inputs": ["times", "delay_ms"],
+      "output": "status"
+    }
+  ]
+}

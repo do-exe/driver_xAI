@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "name": "set_rgb",
+      "description": "Set red, green, and blue brightness values.",
+      "inputs": ["red", "green", "blue"],
+      "output": "state"
+    },
+    {
+      "name": "set_color",
+      "description": "Set the LED using a known color name.",
+      "inputs": ["name"],
+      "output": "state"
+    },
+    {
+      "name": "off",
+      "description": "Turn all LED channels off.",
+      "inputs": [],
+      "output": "state"
+    },
+    {
+      "name": "blink",
+      "description": "Blink the LED with the given RGB color.",
+      "inputs": ["red", "green", "blue", "times", "delay_ms"],
+      "output": "status"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "rgb_led",
+  "display_name": "RGB LED",
+  "version": "0.1.0",
+  "contract_version": "0.1.0",
+  "protocols": [],
+  "interfaces": ["gpio"],
+  "description": "Three-channel red, green, blue LED controlled through GPIO pins. Brightness is handled by the driver.",
+  "fixed_interface": ["setup", "set", "get", "execute", "self_test", "info"],
+  "files": {
+    "commands": "commands.json",
+    "setup_template": "setup.template.json",
+    "driver": "driver.py"
+  }
+}

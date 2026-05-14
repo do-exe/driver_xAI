@@ -1,0 +1,18 @@
+{
+  "name": "ads1115",
+  "display_name": "ADS1115",
+  "version": "0.1.0",
+  "contract_version": "0.1.0",
+  "protocols": ["i2c"],
+  "interfaces": [],
+  "summary": "16-bit, 4-channel I2C analog-to-digital converter with programmable gain.",
+  "fixed_interface": ["commands", "run", "execute", "setup", "self_test", "info"],
+  "files": {
+    "commands": "commands.json",
+    "setup_template": "setup.template.json",
+    "base_class": "../base.py"
+  },
+  "drivers": {
+    "micropython": "driver.py"
+  }
+}

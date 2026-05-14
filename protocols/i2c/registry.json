@@ -1,0 +1,10 @@
+{
+  "protocol": "i2c",
+  "modules": [
+    {
+      "id": "i2c_1",
+      "name": "ads1115"
+    }
+  ]
+}
+

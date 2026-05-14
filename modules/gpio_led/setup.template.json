@@ -1,0 +1,13 @@
+{
+  "module": "gpio_led",
+  "interface": "gpio",
+  "pins": {
+    "pin": null
+  },
+  "options": {
+    "active_high": {
+      "default": true,
+      "allowed": [true, false]
+    }
+  }
+}

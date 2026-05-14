@@ -1,0 +1,23 @@
+{
+  "module": "rgb_led",
+  "interface": "gpio",
+  "pins": {
+    "red": null,
+    "green": null,
+    "blue": null
+  },
+  "options": {
+    "common_type": {
+      "default": "common_cathode",
+      "allowed": ["common_cathode", "common_anode"]
+    },
+    "pwm_frequency_hz": {
+      "default": 1000,
+      "allowed_range": [100, 5000]
+    },
+    "max_value": {
+      "default": 255,
+      "allowed_range": [1, 65535]
+    }
+  }
+}

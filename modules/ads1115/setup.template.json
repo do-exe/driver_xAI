@@ -1,0 +1,16 @@
+{
+  "module": "ads1115",
+  "protocol": "i2c",
+  "address": "0x48",
+  "bus": {
+    "name": "i2c0",
+    "sda": null,
+    "scl": null,
+    "frequency_hz": 400000
+  },
+  "config": {
+    "gain": 1,
+    "data_rate_sps": 128,
+    "mode": "single_shot"
+  }
+}

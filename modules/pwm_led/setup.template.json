@@ -1,0 +1,21 @@
+{
+  "module": "pwm_led",
+  "interface": "gpio",
+  "pins": {
+    "pin": null
+  },
+  "options": {
+    "active_high": {
+      "default": true,
+      "allowed": [true, false]
+    },
+    "pwm_frequency_hz": {
+      "default": 1000,
+      "allowed_range": [100, 5000]
+    },
+    "max_value": {
+      "default": 255,
+      "allowed_range": [1, 65535]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "commands": [
+    {
+      "name": "setup",
+      "inputs": ["address", "gain", "data_rate_sps"],
+      "output": "config",
+      "driver_method": "setup"
+    },
+    {
+      "name": "configure",
+      "inputs": ["gain", "data_rate_sps"],
+      "output": "config",
+      "driver_method": "configure"
+    },
+    {
+      "name": "read_raw",
+      "inputs": ["channel"],
+      "output": "raw_adc_count",
+      "driver_method": "read_raw"
+    },
+    {
+      "name": "read_voltage",
+      "inputs": ["channel"],
+      "output": "voltage",
+      "driver_method": "read_voltage"
+    },
+    {
+      "name": "read_differential",
+      "inputs": ["positive", "negative"],
+      "output": "raw_adc_count",
+      "driver_method": "read_differential"
+    },
+    {
+      "name": "self_test",
+      "inputs": [],
+      "output": "status",
+      "driver_method": "self_test"
+    },
+    {
+      "name": "info",
+      "inputs": [],
+      "output": "metadata",
+      "driver_method": "info"
+    }
+  ]
+}

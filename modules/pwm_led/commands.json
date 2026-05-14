@@ -1,0 +1,34 @@
+{
+  "commands": [
+    {
+      "name": "set_brightness",
+      "description": "Set LED brightness from 0 to max_value.",
+      "inputs": ["value"],
+      "output": "state"
+    },
+    {
+      "name": "on",
+      "description": "Turn the LED fully on.",
+      "inputs": [],
+      "output": "state"
+    },
+    {
+      "name": "off",
+      "description": "Turn the LED off.",
+      "inputs": [],
+      "output": "state"
+    },
+    {
+      "name": "blink",
+      "description": "Blink the LED at the given brightness.",
+      "inputs": ["times", "delay_ms", "value"],
+      "output": "status"
+    },
+    {
+      "name": "fade",
+      "description": "Fade LED brightness up and down.",
+      "inputs": ["cycles", "step", "delay_ms"],
+      "output": "status"
+    }
+  ]
+}
