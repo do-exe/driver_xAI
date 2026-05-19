@@ -1,10 +1,11 @@
 {
-  "protocol": "i2c",
+  "type": "protocol",
+  "id": "i2c",
+  "name": "i2c",
   "modules": [
     {
-      "id": "i2c_1",
+      "id": "ads1115",
       "name": "ads1115"
     }
   ]
 }
-

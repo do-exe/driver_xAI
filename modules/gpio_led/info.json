@@ -1,15 +1,13 @@
 {
-  "name": "gpio_led",
-  "display_name": "GPIO LED",
+  "module_id": "gpio_led",
+  "module_name": "gpio_led",
+  "publisher": "do-exe",
+  "interface": "gpio",
+  "protocol": null,
   "version": "0.1.0",
-  "contract_version": "0.1.0",
-  "protocols": [],
-  "interfaces": ["gpio"],
-  "description": "Single LED controlled through one GPIO output pin.",
-  "fixed_interface": ["setup", "on", "off", "on_for", "blink", "self_test", "info"],
-  "files": {
-    "commands": "commands.json",
-    "setup_template": "setup.template.json",
-    "driver": "driver.py"
-  }
+  "modified_date": "",
+  "has_variant": false,
+  "variants": [],
+  "summary": "Single LED controlled through one GPIO output pin.",
+  "verified": true
 }

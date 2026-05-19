@@ -1,17 +1,19 @@
 {
-  "interface": "gpio",
+  "type": "interface",
+  "id": "gpio",
+  "name": "gpio",
   "modules": [
     {
-      "id": "gpio_1",
-      "name": "rgb_led"
-    },
-    {
-      "id": "gpio_2",
+      "id": "gpio_led",
       "name": "gpio_led"
     },
     {
-      "id": "gpio_3",
+      "id": "pwm_led",
       "name": "pwm_led"
+    },
+    {
+      "id": "rgb_led",
+      "name": "rgb_led"
     }
   ]
 }

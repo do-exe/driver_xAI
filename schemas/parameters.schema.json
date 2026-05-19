@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/do-exe/driver_xAI/schemas/parameters.schema.json",
+  "title": "Driver xAI module parameters",
+  "type": "object",
+  "required": ["module_id", "interface", "protocol", "custom"],
+  "properties": {
+    "module_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "interface": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "protocol": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "bus": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "pins": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "custom": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

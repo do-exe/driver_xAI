@@ -1,6 +1,7 @@
 {
-  "module": "rgb_led",
+  "module_id": "rgb_led",
   "interface": "gpio",
+  "protocol": null,
   "pins": {
     "red": null,
     "green": null,
@@ -19,5 +20,6 @@
       "default": 255,
       "allowed_range": [1, 65535]
     }
-  }
+  },
+  "custom": {}
 }

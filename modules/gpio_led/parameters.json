@@ -1,6 +1,7 @@
 {
-  "module": "gpio_led",
+  "module_id": "gpio_led",
   "interface": "gpio",
+  "protocol": null,
   "pins": {
     "pin": null
   },
@@ -9,5 +10,6 @@
       "default": true,
       "allowed": [true, false]
     }
-  }
+  },
+  "custom": {}
 }

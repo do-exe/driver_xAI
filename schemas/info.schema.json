@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/do-exe/driver_xAI/schemas/info.schema.json",
+  "title": "Driver xAI module info",
+  "type": "object",
+  "required": [
+    "module_id",
+    "module_name",
+    "publisher",
+    "interface",
+    "protocol",
+    "version",
+    "modified_date",
+    "has_variant",
+    "variants",
+    "summary",
+    "verified"
+  ],
+  "properties": {
+    "module_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "module_name": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1
+    },
+    "interface": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "protocol": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "modified_date": {
+      "type": "string"
+    },
+    "has_variant": {
+      "type": "boolean"
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verified": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "module_id": "ads1115",
+  "module_name": "ads1115",
+  "publisher": "do-exe",
+  "interface": null,
+  "protocol": "i2c",
+  "version": "0.1.0",
+  "modified_date": "",
+  "has_variant": false,
+  "variants": [],
+  "summary": "16-bit ADC module over I2C.",
+  "verified": true
+}

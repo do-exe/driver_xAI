@@ -1,28 +1,53 @@
 {
   "commands": [
     {
+      "name": "setup",
+      "description": "Initialize GPIO LED pin and active-high behavior.",
+      "inputs": ["pin", "active_high"],
+      "output": "metadata",
+      "driver_method": "setup"
+    },
+    {
       "name": "on",
       "description": "Turn the LED on.",
       "inputs": [],
-      "output": "state"
+      "output": "state",
+      "driver_method": "on"
     },
     {
       "name": "off",
       "description": "Turn the LED off.",
       "inputs": [],
-      "output": "state"
+      "output": "state",
+      "driver_method": "off"
     },
     {
       "name": "on_for",
       "description": "Turn the LED on for a duration, then turn it off.",
       "inputs": ["seconds"],
-      "output": "state"
+      "output": "state",
+      "driver_method": "on_for"
     },
     {
       "name": "blink",
       "description": "Blink the LED with the given timing.",
       "inputs": ["times", "delay_ms"],
-      "output": "status"
+      "output": "status",
+      "driver_method": "blink"
+    },
+    {
+      "name": "self_test",
+      "description": "Blink the LED quickly to verify wiring.",
+      "inputs": [],
+      "output": "status",
+      "driver_method": "self_test"
+    },
+    {
+      "name": "info",
+      "description": "Return driver metadata and current configuration.",
+      "inputs": [],
+      "output": "metadata",
+      "driver_method": "info"
     }
   ]
 }

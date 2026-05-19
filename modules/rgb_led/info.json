@@ -1,15 +1,13 @@
 {
-  "name": "rgb_led",
-  "display_name": "RGB LED",
+  "module_id": "rgb_led",
+  "module_name": "rgb_led",
+  "publisher": "do-exe",
+  "interface": "gpio",
+  "protocol": null,
   "version": "0.1.0",
-  "contract_version": "0.1.0",
-  "protocols": [],
-  "interfaces": ["gpio"],
-  "description": "Three-channel red, green, blue LED controlled through GPIO pins. Brightness is handled by the driver.",
-  "fixed_interface": ["setup", "set", "get", "execute", "self_test", "info"],
-  "files": {
-    "commands": "commands.json",
-    "setup_template": "setup.template.json",
-    "driver": "driver.py"
-  }
+  "modified_date": "",
+  "has_variant": false,
+  "variants": [],
+  "summary": "Three-channel LED controlled by GPIO pins.",
+  "verified": true
 }

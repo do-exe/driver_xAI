@@ -1,15 +1,13 @@
 {
-  "name": "pwm_led",
-  "display_name": "PWM LED",
+  "module_id": "pwm_led",
+  "module_name": "pwm_led",
+  "publisher": "do-exe",
+  "interface": "gpio",
+  "protocol": null,
   "version": "0.1.0",
-  "contract_version": "0.1.0",
-  "protocols": [],
-  "interfaces": ["gpio"],
-  "description": "Single LED channel controlled with PWM brightness on one GPIO pin.",
-  "fixed_interface": ["setup", "set", "get", "execute", "self_test", "info"],
-  "files": {
-    "commands": "commands.json",
-    "setup_template": "setup.template.json",
-    "driver": "driver.py"
-  }
+  "modified_date": "",
+  "has_variant": false,
+  "variants": [],
+  "summary": "Single LED channel controlled with PWM brightness on one GPIO pin.",
+  "verified": true
 }
