@@ -24,6 +24,12 @@
           "allowed": [8, 16, 32, 64, 128, 250, 475, 860],
           "default": 128,
           "unit": "samples_per_second"
+        },
+        "mode": {
+          "type": "string",
+          "required": false,
+          "allowed": ["single_shot"],
+          "default": "single_shot"
         }
       },
       "output": "metadata",

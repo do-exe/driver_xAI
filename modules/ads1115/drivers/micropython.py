@@ -51,12 +51,13 @@ class Driver(ModuleBase):
         "info",
     )
 
-    def __init__(self, i2c, address=0x48, gain=1, data_rate_sps=128):
+    def __init__(self, i2c, address=0x48, gain=1, data_rate_sps=128, mode="single_shot"):
         self.i2c = i2c
-        self.setup(address=address, gain=gain, data_rate_sps=data_rate_sps)
+        self.setup(address=address, gain=gain, data_rate_sps=data_rate_sps, mode=mode)
 
-    def setup(self, address=0x48, gain=1, data_rate_sps=128):
+    def setup(self, address=0x48, gain=1, data_rate_sps=128, mode="single_shot"):
         self.address = int(str(address), 0)
+        self.mode = str(mode)
         self.configure(gain=gain, data_rate_sps=data_rate_sps)
         return self.info()
 
@@ -94,6 +95,7 @@ class Driver(ModuleBase):
             "address": self.address,
             "gain": self.gain,
             "data_rate_sps": self.data_rate_sps,
+            "mode": self.mode,
         }
 
     def raw_to_voltage(self, raw):
