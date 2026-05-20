@@ -1,16 +1,22 @@
 {
-  "module_id": "rgb_led",
+  "module_id": "led",
   "interface": "gpio",
   "protocol": null,
   "pins": {
-    "red": null,
-    "green": null,
-    "blue": null
+    "channels": {}
   },
   "options": {
+    "mode": {
+      "default": "pwm",
+      "allowed": ["pwm", "digital"]
+    },
+    "active_high": {
+      "default": true,
+      "allowed": [true, false]
+    },
     "common_type": {
       "default": "common_cathode",
-      "allowed": ["common_cathode", "common_anode"]
+      "allowed": ["common_cathode", "common_anode", null]
     },
     "pwm_frequency_hz": {
       "default": 1000,

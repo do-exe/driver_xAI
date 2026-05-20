@@ -1,6 +1,6 @@
 {
-  "module_id": "rgb_led",
-  "module_name": "rgb_led",
+  "module_id": "led",
+  "module_name": "led",
   "publisher": "do-exe",
   "interface": "gpio",
   "protocol": null,
@@ -8,6 +8,6 @@
   "modified_date": "",
   "has_variant": false,
   "variants": [],
-  "summary": "Three-channel LED controlled by GPIO pins.",
+  "summary": "Adaptive LED driver for one or many GPIO, PWM, RGB, or RGBRGB LED channels.",
   "verified": true
 }

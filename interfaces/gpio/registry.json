@@ -4,16 +4,8 @@
   "name": "gpio",
   "modules": [
     {
-      "id": "gpio_led",
-      "name": "gpio_led"
-    },
-    {
-      "id": "pwm_led",
-      "name": "pwm_led"
-    },
-    {
-      "id": "rgb_led",
-      "name": "rgb_led"
+      "id": "led",
+      "name": "led"
     }
   ]
 }

@@ -1,0 +1,88 @@
+{
+  "commands": [
+    {
+      "name": "setup",
+      "description": "Initialize one or more LED channels from a name-to-GPIO map.",
+      "inputs": ["channels", "mode", "active_high", "common_type", "pwm_frequency_hz", "max_value"],
+      "output": "metadata",
+      "driver_method": "setup"
+    },
+    {
+      "name": "set",
+      "description": "Set one or more named channels using keyword values.",
+      "inputs": ["values"],
+      "output": "state",
+      "driver_method": "set"
+    },
+    {
+      "name": "set_channel",
+      "description": "Set one named channel to a brightness value.",
+      "inputs": ["name", "value"],
+      "output": "state",
+      "driver_method": "set_channel"
+    },
+    {
+      "name": "set_all",
+      "description": "Set every configured LED channel to one brightness value.",
+      "inputs": ["value"],
+      "output": "state",
+      "driver_method": "set_all"
+    },
+    {
+      "name": "set_rgb",
+      "description": "Set RGB-like channels. Names beginning with red/r, green/g, and blue/b are matched.",
+      "inputs": ["red", "green", "blue"],
+      "output": "state",
+      "driver_method": "set_rgb"
+    },
+    {
+      "name": "set_color",
+      "description": "Set RGB-like channels using a known color name.",
+      "inputs": ["name"],
+      "output": "state",
+      "driver_method": "set_color"
+    },
+    {
+      "name": "on",
+      "description": "Turn every channel fully on.",
+      "inputs": ["value"],
+      "output": "state",
+      "driver_method": "on"
+    },
+    {
+      "name": "off",
+      "description": "Turn every channel off.",
+      "inputs": [],
+      "output": "state",
+      "driver_method": "off"
+    },
+    {
+      "name": "blink",
+      "description": "Blink all channels or provided channel values.",
+      "inputs": ["values", "times", "delay_ms"],
+      "output": "status",
+      "driver_method": "blink"
+    },
+    {
+      "name": "fade",
+      "description": "Fade one channel or all channels up and down.",
+      "inputs": ["channel", "cycles", "step", "delay_ms"],
+      "output": "status",
+      "driver_method": "fade"
+    },
+    {
+      "name": "self_test",
+      "description": "Briefly light each configured channel one by one.",
+      "inputs": [],
+      "output": "status",
+      "driver_method": "self_test"
+    },
+    {
+      "name": "info",
+      "description": "Return driver metadata and current configuration.",
+      "inputs": [],
+      "output": "metadata",
+      "driver_method": "info"
+    }
+  ]
+}

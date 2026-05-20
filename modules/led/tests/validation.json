@@ -1,0 +1,9 @@
+{
+  "module_id": "led",
+  "expected": {
+    "interface": "gpio",
+    "protocol": null,
+    "drivers": ["micropython.py", "c.c", "rust.rs"],
+    "commands": ["setup", "set", "set_channel", "set_all", "set_rgb", "set_color", "on", "off", "blink", "fade", "self_test", "info"]
+  }
+}

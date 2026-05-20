@@ -1,2 +1,2 @@
-// PWM LED Rust driver placeholder.
+// Adaptive LED Rust driver placeholder.
 // The canonical MicroPython implementation is drivers/micropython.py.
