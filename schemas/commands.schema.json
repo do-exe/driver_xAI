@@ -9,32 +9,115 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "inputs", "output"],
+        "required": ["name", "description", "inputs", "output", "driver_method"],
         "properties": {
           "name": {
             "type": "string",
             "pattern": "^[a-z0-9_]+$"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "inputs": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "pattern": "^[a-zA-Z0-9_]+$"
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/$defs/input"
             }
           },
           "output": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "driver_method": {
             "type": "string",
             "pattern": "^[a-zA-Z0-9_]+$"
+          },
+          "safe": {
+            "type": "boolean",
+            "default": true
+          },
+          "user_facing": {
+            "type": "boolean",
+            "default": true
+          },
+          "side_effect": {
+            "type": "string",
+            "enum": ["none", "configure_device", "read_hardware", "write_hardware", "motion", "timed_sequence"]
+          },
+          "allow_extra": {
+            "type": "boolean",
+            "default": false
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["runtime"],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "runtime": {
+                  "type": "object"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "allowed_combinations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": ["string", "number", "integer", "boolean", "null"]
+              }
+            }
           }
         },
         "additionalProperties": false
       }
+    }
+  },
+  "$defs": {
+    "input": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "integer", "number", "boolean", "object", "array"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "nullable": {
+          "type": "boolean",
+          "default": false
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "allowed": {
+          "type": "array",
+          "items": {
+            "type": ["string", "number", "integer", "boolean", "null"]
+          }
+        },
+        "default": {},
+        "unit": {
+          "type": "string"
+        },
+        "example": {}
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

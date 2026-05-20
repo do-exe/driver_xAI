@@ -56,7 +56,7 @@ class Driver(ModuleBase):
         self.setup(address=address, gain=gain, data_rate_sps=data_rate_sps)
 
     def setup(self, address=0x48, gain=1, data_rate_sps=128):
-        self.address = int(address)
+        self.address = int(str(address), 0)
         self.configure(gain=gain, data_rate_sps=data_rate_sps)
         return self.info()
 

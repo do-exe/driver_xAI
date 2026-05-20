@@ -3,86 +3,313 @@
     {
       "name": "setup",
       "description": "Initialize one or more LED channels from a name-to-GPIO map.",
-      "inputs": ["channels", "mode", "active_high", "common_type", "pwm_frequency_hz", "max_value"],
+      "inputs": {
+        "channels": {
+          "type": "object",
+          "required": false,
+          "description": "Map channel names to GPIO pins, for example red/green/blue or r1/g1/b1."
+        },
+        "pin": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "description": "Single GPIO pin for one-channel LED use."
+        },
+        "mode": {
+          "type": "string",
+          "required": false,
+          "allowed": ["pwm", "digital"],
+          "default": "pwm"
+        },
+        "active_high": {
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        "common_type": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "allowed": ["common_cathode", "common_anode", null],
+          "default": "common_cathode"
+        },
+        "pwm_frequency_hz": {
+          "type": "integer",
+          "required": false,
+          "min": 100,
+          "max": 5000,
+          "default": 1000,
+          "unit": "Hz"
+        },
+        "max_value": {
+          "type": "integer",
+          "required": false,
+          "min": 1,
+          "max": 65535,
+          "default": 255
+        }
+      },
       "output": "metadata",
-      "driver_method": "setup"
+      "driver_method": "setup",
+      "safe": true,
+      "user_facing": false,
+      "side_effect": "configure_device"
     },
     {
       "name": "set",
-      "description": "Set one or more named channels using keyword values.",
-      "inputs": ["values"],
+      "description": "Set one or more named channels using a channel-to-brightness map.",
+      "inputs": {
+        "values": {
+          "type": "object",
+          "required": true,
+          "description": "Map channel names to brightness values between 0 and max_value."
+        }
+      },
       "output": "state",
-      "driver_method": "set"
+      "driver_method": "set",
+      "safe": true,
+      "side_effect": "write_hardware",
+      "examples": [
+        {
+          "description": "Set a mixed RGB color.",
+          "runtime": {
+            "values": {
+              "red": 120,
+              "green": 40,
+              "blue": 180
+            }
+          }
+        }
+      ]
     },
     {
       "name": "set_channel",
       "description": "Set one named channel to a brightness value.",
-      "inputs": ["name", "value"],
+      "inputs": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "Configured channel name such as red, green, blue, r1, g1, or b1.",
+          "example": "red"
+        },
+        "value": {
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 65535,
+          "unit": "brightness",
+          "example": 180
+        }
+      },
       "output": "state",
-      "driver_method": "set_channel"
+      "driver_method": "set_channel",
+      "safe": true,
+      "side_effect": "write_hardware",
+      "examples": [
+        {
+          "runtime": {
+            "name": "red",
+            "value": 180
+          }
+        }
+      ]
     },
     {
       "name": "set_all",
       "description": "Set every configured LED channel to one brightness value.",
-      "inputs": ["value"],
+      "inputs": {
+        "value": {
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 65535,
+          "unit": "brightness",
+          "example": 160
+        }
+      },
       "output": "state",
-      "driver_method": "set_all"
+      "driver_method": "set_all",
+      "safe": true,
+      "side_effect": "write_hardware"
     },
     {
       "name": "set_rgb",
       "description": "Set RGB-like channels. Names beginning with red/r, green/g, and blue/b are matched.",
-      "inputs": ["red", "green", "blue"],
+      "inputs": {
+        "red": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 65535,
+          "default": 0,
+          "unit": "brightness"
+        },
+        "green": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 65535,
+          "default": 0,
+          "unit": "brightness"
+        },
+        "blue": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 65535,
+          "default": 0,
+          "unit": "brightness"
+        }
+      },
       "output": "state",
-      "driver_method": "set_rgb"
+      "driver_method": "set_rgb",
+      "safe": true,
+      "side_effect": "write_hardware",
+      "examples": [
+        {
+          "description": "Turn on only blue.",
+          "runtime": {
+            "red": 0,
+            "green": 0,
+            "blue": 180
+          }
+        }
+      ]
     },
     {
       "name": "set_color",
       "description": "Set RGB-like channels using a known color name.",
-      "inputs": ["name"],
+      "inputs": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "allowed": ["red", "green", "blue", "yellow", "cyan", "magenta", "white", "off"],
+          "example": "cyan"
+        }
+      },
       "output": "state",
-      "driver_method": "set_color"
+      "driver_method": "set_color",
+      "safe": true,
+      "side_effect": "write_hardware",
+      "examples": [
+        {
+          "runtime": {
+            "name": "yellow"
+          }
+        }
+      ]
     },
     {
       "name": "on",
-      "description": "Turn every channel fully on.",
-      "inputs": ["value"],
+      "description": "Turn every channel on.",
+      "inputs": {
+        "value": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 65535,
+          "unit": "brightness"
+        }
+      },
       "output": "state",
-      "driver_method": "on"
+      "driver_method": "on",
+      "safe": true,
+      "side_effect": "write_hardware"
     },
     {
       "name": "off",
       "description": "Turn every channel off.",
-      "inputs": [],
+      "inputs": {},
       "output": "state",
-      "driver_method": "off"
+      "driver_method": "off",
+      "safe": true,
+      "side_effect": "write_hardware"
     },
     {
       "name": "blink",
       "description": "Blink all channels or provided channel values.",
-      "inputs": ["values", "times", "delay_ms"],
+      "inputs": {
+        "values": {
+          "type": "object",
+          "required": false,
+          "description": "Optional channel-to-brightness map for the on phase."
+        },
+        "times": {
+          "type": "integer",
+          "required": false,
+          "min": 1,
+          "max": 100,
+          "default": 3
+        },
+        "delay_ms": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 60000,
+          "default": 250,
+          "unit": "ms"
+        }
+      },
       "output": "status",
-      "driver_method": "blink"
+      "driver_method": "blink",
+      "safe": true,
+      "side_effect": "timed_sequence"
     },
     {
       "name": "fade",
       "description": "Fade one channel or all channels up and down.",
-      "inputs": ["channel", "cycles", "step", "delay_ms"],
+      "inputs": {
+        "channel": {
+          "type": "string",
+          "required": false,
+          "nullable": true,
+          "description": "Optional configured channel name. Omit to fade all channels."
+        },
+        "cycles": {
+          "type": "integer",
+          "required": false,
+          "min": 1,
+          "max": 100,
+          "default": 1
+        },
+        "step": {
+          "type": "integer",
+          "required": false,
+          "min": 1,
+          "max": 65535,
+          "default": 16
+        },
+        "delay_ms": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 60000,
+          "default": 25,
+          "unit": "ms"
+        }
+      },
       "output": "status",
-      "driver_method": "fade"
+      "driver_method": "fade",
+      "safe": true,
+      "side_effect": "timed_sequence"
     },
     {
       "name": "self_test",
       "description": "Briefly light each configured channel one by one.",
-      "inputs": [],
+      "inputs": {},
       "output": "status",
-      "driver_method": "self_test"
+      "driver_method": "self_test",
+      "safe": true,
+      "side_effect": "timed_sequence"
     },
     {
       "name": "info",
       "description": "Return driver metadata and current configuration.",
-      "inputs": [],
+      "inputs": {},
       "output": "metadata",
-      "driver_method": "info"
+      "driver_method": "info",
+      "safe": true,
+      "side_effect": "none"
     }
   ]
 }

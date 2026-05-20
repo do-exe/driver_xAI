@@ -3,51 +3,171 @@
     {
       "name": "setup",
       "description": "Initialize ADS1115 over I2C.",
-      "inputs": ["address", "gain", "data_rate_sps"],
-      "output": "config",
-      "driver_method": "setup"
+      "inputs": {
+        "address": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 127,
+          "default": 72,
+          "unit": "i2c_address"
+        },
+        "gain": {
+          "type": "integer",
+          "required": false,
+          "allowed": [1, 2, 4, 8, 16],
+          "default": 1
+        },
+        "data_rate_sps": {
+          "type": "integer",
+          "required": false,
+          "allowed": [8, 16, 32, 64, 128, 250, 475, 860],
+          "default": 128,
+          "unit": "samples_per_second"
+        }
+      },
+      "output": "metadata",
+      "driver_method": "setup",
+      "safe": true,
+      "user_facing": false,
+      "side_effect": "configure_device"
     },
     {
       "name": "configure",
       "description": "Update gain and data rate.",
-      "inputs": ["gain", "data_rate_sps"],
-      "output": "config",
-      "driver_method": "configure"
+      "inputs": {
+        "gain": {
+          "type": "integer",
+          "required": false,
+          "allowed": [1, 2, 4, 8, 16],
+          "default": 1
+        },
+        "data_rate_sps": {
+          "type": "integer",
+          "required": false,
+          "allowed": [8, 16, 32, 64, 128, 250, 475, 860],
+          "default": 128,
+          "unit": "samples_per_second"
+        }
+      },
+      "output": "metadata",
+      "driver_method": "configure",
+      "safe": true,
+      "side_effect": "configure_device"
     },
     {
       "name": "read_raw",
       "description": "Read raw signed ADC count from a single-ended channel.",
-      "inputs": ["channel"],
+      "inputs": {
+        "channel": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 3,
+          "default": 0
+        }
+      },
       "output": "raw_adc_count",
-      "driver_method": "read_raw"
+      "driver_method": "read_raw",
+      "safe": true,
+      "side_effect": "read_hardware",
+      "examples": [
+        {
+          "runtime": {
+            "channel": 0
+          }
+        }
+      ]
     },
     {
       "name": "read_voltage",
       "description": "Read voltage from a single-ended channel.",
-      "inputs": ["channel"],
+      "inputs": {
+        "channel": {
+          "type": "integer",
+          "required": false,
+          "min": 0,
+          "max": 3,
+          "default": 0
+        }
+      },
       "output": "voltage",
-      "driver_method": "read_voltage"
+      "driver_method": "read_voltage",
+      "safe": true,
+      "side_effect": "read_hardware",
+      "examples": [
+        {
+          "runtime": {
+            "channel": 0
+          }
+        }
+      ]
     },
     {
       "name": "read_differential",
       "description": "Read raw signed ADC count from a supported differential pair.",
-      "inputs": ["positive", "negative"],
+      "inputs": {
+        "positive": {
+          "type": "integer",
+          "required": false,
+          "allowed": [0, 1, 2],
+          "default": 0
+        },
+        "negative": {
+          "type": "integer",
+          "required": false,
+          "allowed": [1, 3],
+          "default": 1
+        }
+      },
       "output": "raw_adc_count",
-      "driver_method": "read_differential"
+      "driver_method": "read_differential",
+      "safe": true,
+      "side_effect": "read_hardware",
+      "allowed_combinations": [
+        {
+          "positive": 0,
+          "negative": 1
+        },
+        {
+          "positive": 0,
+          "negative": 3
+        },
+        {
+          "positive": 1,
+          "negative": 3
+        },
+        {
+          "positive": 2,
+          "negative": 3
+        }
+      ],
+      "examples": [
+        {
+          "runtime": {
+            "positive": 0,
+            "negative": 1
+          }
+        }
+      ]
     },
     {
       "name": "self_test",
       "description": "Check that the device responds on the configured I2C address.",
-      "inputs": [],
+      "inputs": {},
       "output": "status",
-      "driver_method": "self_test"
+      "driver_method": "self_test",
+      "safe": true,
+      "side_effect": "read_hardware"
     },
     {
       "name": "info",
       "description": "Return driver metadata and current configuration.",
-      "inputs": [],
+      "inputs": {},
       "output": "metadata",
-      "driver_method": "info"
+      "driver_method": "info",
+      "safe": true,
+      "side_effect": "none"
     }
   ]
 }

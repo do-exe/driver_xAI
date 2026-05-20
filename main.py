@@ -433,6 +433,8 @@ try:
 except NameError:
     ROOT_DIR = ""
 
+_instances = {}
+
 
 def _path(path):
     return ("%s/%s" % (ROOT_DIR, path)) if ROOT_DIR else path
@@ -443,12 +445,42 @@ def _read_json(path):
         return json.loads(handle.read())
 
 
+def _ok(action, module_id=None, command=None, result=None):
+    return {
+        "ok": True,
+        "action": action,
+        "module_id": module_id,
+        "command": command,
+        "result": result,
+        "error": None,
+    }
+
+
+def _error(code, message, module_id=None, command=None, details=None):
+    return {
+        "ok": False,
+        "action": None,
+        "module_id": module_id,
+        "command": command,
+        "result": None,
+        "error": {
+            "code": code,
+            "message": message,
+            "details": details,
+        },
+    }
+
+
 def config():
     return _read_json("driver_xai_config.json")
 
 
 def lock():
     return _read_json("driver_xai.lock.json")
+
+
+def list_modules():
+    return _ok("list_modules", result=sorted(lock().get("modules", {}).keys()))
 
 
 def info(module_id):
@@ -463,10 +495,27 @@ def commands(module_id):
     return _read_json("modules/%s/commands.json" % module_id)["commands"]
 
 
+def describe(module_id):
+    data = {
+        "info": info(module_id),
+        "parameters": parameters(module_id),
+        "commands": commands(module_id),
+        "lock": lock().get("modules", {}).get(module_id, {}),
+    }
+    return _ok("describe", module_id=module_id, result=data)
+
+
+def describe_command(module_id, command):
+    command_data = _command_spec(module_id, command)
+    if command_data is None:
+        return _error("UNKNOWN_COMMAND", "unknown command", module_id, command)
+    return _ok("describe_command", module_id=module_id, command=command, result=command_data)
+
+
 def setup_from_parameters(module_id):
     data = parameters(module_id)
     setup = {}
-    for section_name in ("pins", "config", "bus"):
+    for section_name in ("pins", "config"):
         section = data.get(section_name, {})
         for key, value in section.items():
             setup[key] = value
@@ -475,6 +524,26 @@ def setup_from_parameters(module_id):
             setup[key] = value["default"]
         else:
             setup[key] = value
+    return setup
+
+
+def _bus_setup(module_id, setup):
+    module_info = info(module_id)
+    if module_info.get("protocol") != "i2c" or "i2c" in setup:
+        return setup
+    bus = parameters(module_id).get("bus", {})
+    sda = bus.get("sda")
+    scl = bus.get("scl")
+    if sda is None or scl is None:
+        return setup
+    try:
+        from machine import I2C, Pin
+        name = str(bus.get("name", "i2c0"))
+        bus_id = int(name.replace("i2c", "") or 0)
+        frequency = int(bus.get("frequency_hz", 400000))
+        setup["i2c"] = I2C(bus_id, scl=Pin(int(scl)), sda=Pin(int(sda)), freq=frequency)
+    except Exception:
+        pass
     return setup
 
 
@@ -487,13 +556,162 @@ def load_driver(module_id):
     return module.Driver
 
 
-def execute(module_id, setup=None, command=None, runtime=None):
-    if command is None:
-        raise ValueError("command is required")
+def create(module_id, setup=None, refresh=False):
     if setup is None:
         setup = setup_from_parameters(module_id)
-    Driver = load_driver(module_id)
-    driver = Driver(**setup)
-    method = getattr(driver, command)
-    return method(**(runtime or {}))
+    setup = _bus_setup(module_id, setup)
+    if refresh or module_id not in _instances:
+        Driver = load_driver(module_id)
+        _instances[module_id] = Driver(**setup)
+    return _instances[module_id]
+
+
+def reset(module_id=None):
+    targets = [module_id] if module_id else list(_instances.keys())
+    for target in targets:
+        driver = _instances.get(target)
+        if driver is not None and hasattr(driver, "off"):
+            try:
+                driver.off()
+            except Exception:
+                pass
+        if target in _instances:
+            del _instances[target]
+    return _ok("reset", module_id=module_id, result={"modules": targets})
+
+
+def state(module_id):
+    try:
+        driver = create(module_id)
+        if hasattr(driver, "state"):
+            result = driver.state()
+        elif hasattr(driver, "details"):
+            result = driver.details()
+        else:
+            result = {}
+        return _ok("state", module_id=module_id, result=result)
+    except Exception as exc:
+        return _error("STATE_ERROR", str(exc), module_id)
+
+
+def validate(module_id, command, runtime=None):
+    command_data = _command_spec(module_id, command)
+    if command_data is None:
+        return _error("UNKNOWN_COMMAND", "unknown command", module_id, command)
+    if runtime is None:
+        runtime = {}
+    if not isinstance(runtime, dict):
+        return _error("INVALID_RUNTIME", "runtime must be an object", module_id, command)
+
+    inputs = command_data.get("inputs", {})
+    if isinstance(inputs, list):
+        normalized = {}
+        for name in inputs:
+            normalized[name] = {"required": False}
+        inputs = normalized
+    if not isinstance(inputs, dict):
+        return _error("INVALID_COMMAND_SPEC", "command inputs must be an object", module_id, command)
+
+    errors = []
+    allow_extra = bool(command_data.get("allow_extra", False))
+    for key in runtime:
+        if key not in inputs and not allow_extra:
+            errors.append({"field": key, "message": "unknown input"})
+    for name, rule in inputs.items():
+        if rule is None:
+            rule = {}
+        if rule.get("required", False) and name not in runtime:
+            errors.append({"field": name, "message": "required input missing"})
+            continue
+        if name not in runtime:
+            continue
+        error = _validate_value(name, runtime[name], rule)
+        if error:
+            errors.append(error)
+
+    combinations = command_data.get("allowed_combinations")
+    if combinations and not _matches_combination(runtime, inputs, combinations):
+        errors.append({
+            "field": "allowed_combinations",
+            "message": "input combination is not supported",
+            "allowed": combinations,
+        })
+
+    if errors:
+        return _error("VALIDATION_ERROR", "runtime failed validation", module_id, command, errors)
+    return _ok("validate", module_id=module_id, command=command, result={"runtime": runtime})
+
+
+def execute(module_id, command=None, runtime=None, setup=None, refresh=False):
+    if command is None:
+        return _error("MISSING_COMMAND", "command is required", module_id)
+    validation = validate(module_id, command, runtime)
+    if not validation.get("ok"):
+        return validation
+    try:
+        command_data = _command_spec(module_id, command)
+        method_name = command_data.get("driver_method", command)
+        driver = create(module_id, setup=setup, refresh=refresh)
+        method = getattr(driver, method_name)
+        result = method(**(runtime or {}))
+        return _ok("execute", module_id=module_id, command=command, result=result)
+    except Exception as exc:
+        return _error("EXECUTION_ERROR", str(exc), module_id, command)
+
+
+def _command_spec(module_id, command):
+    for command_data in commands(module_id):
+        if command_data.get("name") == command:
+            return command_data
+    return None
+
+
+def _validate_value(name, value, rule):
+    if value is None:
+        if rule.get("nullable", False):
+            return None
+        return {"field": name, "message": "null is not allowed"}
+
+    expected_type = rule.get("type")
+    if expected_type and not _matches_type(value, expected_type):
+        return {"field": name, "message": "expected %s" % expected_type}
+
+    if "allowed" in rule and value not in rule.get("allowed", []):
+        return {"field": name, "message": "value is not allowed", "allowed": rule.get("allowed", [])}
+
+    if isinstance(value, (int, float)):
+        if "min" in rule and value < rule["min"]:
+            return {"field": name, "message": "value below minimum", "min": rule["min"]}
+        if "max" in rule and value > rule["max"]:
+            return {"field": name, "message": "value above maximum", "max": rule["max"]}
+    return None
+
+
+def _matches_combination(runtime, inputs, combinations):
+    for combination in combinations:
+        matched = True
+        for name, expected in combination.items():
+            value = runtime[name] if name in runtime else inputs.get(name, {}).get("default")
+            if value != expected:
+                matched = False
+                break
+        if matched:
+            return True
+    return False
+
+
+def _matches_type(value, expected_type):
+    if expected_type == "string":
+        return isinstance(value, str)
+    if expected_type == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected_type == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if expected_type == "boolean":
+        return isinstance(value, bool)
+    if expected_type == "object":
+        return isinstance(value, dict)
+    if expected_type == "array":
+        return isinstance(value, list)
+    return True
 '''
