@@ -1,0 +1,90 @@
+{
+  "commands": [
+    {
+      "name": "setup",
+      "description": "Bind platform callbacks and initialize the e-paper panel.",
+      "inputs": {},
+      "output": "status",
+      "driver_method": "epaper_1in54_init",
+      "safe": true,
+      "user_facing": false,
+      "side_effect": "configure_device"
+    },
+    {
+      "name": "clear",
+      "description": "Stream a full white or black frame to the panel and refresh.",
+      "inputs": {
+        "black": {
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "When true, clear to black. Otherwise clear to white."
+        }
+      },
+      "output": "status",
+      "driver_method": "epaper_1in54_clear",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "draw_smile",
+      "description": "Draw a streamed smile face demo without using a framebuffer.",
+      "inputs": {},
+      "output": "status",
+      "driver_method": "epaper_1in54_draw_smile",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "draw_pattern",
+      "description": "Draw a streamed border/checker test pattern without using a framebuffer.",
+      "inputs": {},
+      "output": "status",
+      "driver_method": "epaper_1in54_draw_pattern",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "stream",
+      "description": "Stream a caller-provided 200x200 1-bit frame to the panel. White bits are 1, black bits are 0.",
+      "inputs": {
+        "frame": {
+          "type": "object",
+          "required": true,
+          "description": "Platform-specific frame source that yields 25 bytes for each of 200 rows."
+        }
+      },
+      "output": "status",
+      "driver_method": "epaper_1in54_stream",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "refresh",
+      "description": "Trigger a full display refresh and wait until idle.",
+      "inputs": {},
+      "output": "status",
+      "driver_method": "epaper_1in54_refresh",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "sleep",
+      "description": "Put the e-paper controller into deep sleep.",
+      "inputs": {},
+      "output": "status",
+      "driver_method": "epaper_1in54_sleep",
+      "safe": true,
+      "side_effect": "write_hardware"
+    },
+    {
+      "name": "info",
+      "description": "Return display metadata.",
+      "inputs": {},
+      "output": "metadata",
+      "driver_method": "epaper_1in54_info",
+      "safe": true,
+      "side_effect": "none"
+    }
+  ]
+}

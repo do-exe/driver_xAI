@@ -1,0 +1,19 @@
+{
+  "module_id": "epaper_1in54",
+  "expected": {
+    "info": {
+      "module_id": "epaper_1in54",
+      "interface": null,
+      "protocol": "spi",
+      "verified": true
+    },
+    "parameters": {
+      "config": {
+        "width": 200,
+        "height": 200,
+        "framebuffer_required": false
+      }
+    },
+    "commands": ["setup", "clear", "draw_smile", "draw_pattern", "stream", "refresh", "sleep", "info"]
+  }
+}

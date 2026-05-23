@@ -1,0 +1,11 @@
+{
+  "type": "protocol",
+  "id": "spi",
+  "name": "spi",
+  "modules": [
+    {
+      "id": "epaper_1in54",
+      "name": "epaper_1in54"
+    }
+  ]
+}

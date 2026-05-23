@@ -1,0 +1,61 @@
+{
+  "module_id": "epaper_1in54",
+  "interface": null,
+  "protocol": "spi",
+  "bus": {
+    "spi": {
+      "mode": 0,
+      "max_frequency_hz": 2000000,
+      "bit_order": "msb_first"
+    }
+  },
+  "pins": {
+    "din": {
+      "default": "PA5",
+      "description": "SPI MOSI / DIN"
+    },
+    "clk": {
+      "default": "PA6",
+      "description": "SPI clock"
+    },
+    "cs": {
+      "default": "PA7",
+      "description": "Chip select, active low"
+    },
+    "dc": {
+      "default": "PB1",
+      "description": "Data/command select"
+    },
+    "rst": {
+      "default": "PA9",
+      "description": "Display reset"
+    },
+    "busy": {
+      "default": "PA10",
+      "description": "Display busy input"
+    }
+  },
+  "config": {
+    "width": 200,
+    "height": 200,
+    "bytes_per_row": 25,
+    "colors": ["black", "white"],
+    "framebuffer_required": false
+  },
+  "options": {
+    "busy_active_high": {
+      "default": true,
+      "allowed": [true, false]
+    },
+    "reset_delay_ms": {
+      "default": 10,
+      "allowed_range": [1, 100]
+    }
+  },
+  "custom": {
+    "module_family": "waveshare_epaper",
+    "panel_size": "1.54inch",
+    "resolution": "200x200",
+    "memory_strategy": "stream_rows_without_framebuffer"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "module_id": "epaper_1in54",
+  "module_name": "epaper_1in54",
+  "publisher": "do-exe",
+  "interface": null,
+  "protocol": "spi",
+  "version": "0.1.0",
+  "modified_date": "",
+  "has_variant": false,
+  "variants": [],
+  "summary": "Streaming C driver for Waveshare 1.54 inch 200x200 black/white e-paper modules using SPI plus CS/DC/RST/BUSY GPIO.",
+  "verified": true
+}
